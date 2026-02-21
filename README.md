@@ -27,87 +27,104 @@ An enterprise-ready, API-first backend system designed to analyze multimodal cus
 *   **Intelligence Engine:** Google Gemini (gemini-2.5-flash via the new google-genai SDK)
     
 *   **Data Validation & Serialization:** Pydantic
-    
 
-📂 Project Structure
---------------------
+## ⚙️ Setup & Installation
 
-Plaintext
+### 1. Prerequisites
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   conversation-intelligence/  ├── app/  │   ├── api/  │   │   └── routes.py           # API endpoints (/analyze/audio, /analyze/text)  │   ├── core/  │   │   ├── config.py           # Environment variables & setting management  │   │   └── security.py         # API Key auth & Client Context mock database  │   ├── models/  │   │   └── schemas.py          # Pydantic models enforcing strict JSON structures  │   ├── services/  │   │   ├── audio_processor.py  # AssemblyAI transcription & diarization logic  │   │   └── intelligence.py     # Gemini Prompt Engineering & JSON enforcement  │   ├── utils/  │   │   └── file_helpers.py     # Safe temporary file management for audio uploads  │   └── main.py                 # FastAPI application instance & routing  ├── client.py                   # Automated Python script to test the API  ├── requirements.txt            # Project dependencies  └── README.md                   # Project documentation   `
+* Python 3.9+ installed on your system.
+* API keys for AssemblyAI and Google Gemini.
 
-⚙️ Setup & Installation
------------------------
-
-### 1\. Prerequisites
-
-*   Python 3.9+ installed on your system.
-    
-*   API keys for AssemblyAI and Google Gemini.
-    
-
-### 2\. Create and Activate a Virtual Environment
+### 2. Create and Activate a Virtual Environment
 
 It is highly recommended to run this project inside an isolated virtual environment to prevent package conflicts.
 
 **Windows:**
 
-DOS
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   python -m venv venv  venv\Scripts\activate   `
+```cmd
+python -m venv venv
+venv\Scripts\activate
+```
 
 **macOS / Linux:**
 
-Bash
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   python3 -m venv venv  source venv/bin/activate   `
+### 3. Install Dependencies
 
-### 3\. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
 
-Bash
+### 4. Configure Environment Variables
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   pip install -r requirements.txt   `
+The system relies on secure API keys to function. Create a file named `.env` in the root directory of the project:
 
-### 4\. Configure Environment Variables
+```plaintext
+# External AI Services  
+ASSEMBLYAI_API_KEY=your_assemblyai_api_key_here  
+GEMINI_API_KEY=your_google_gemini_api_key_here  
 
-The system relies on secure API keys to function. Create a file named .env in the root directory of the project:
+# Local API Security (Used for authenticating your clients)  
+MY_BACKEND_API_KEY=finance-corp-key-123
+```
 
-Plaintext
+*(Note: Ensure `.env` is added to your `.gitignore` file).*
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   # External AI Services  ASSEMBLYAI_API_KEY=your_assemblyai_api_key_here  GEMINI_API_KEY=your_google_gemini_api_key_here  # Local API Security (Used for authenticating your clients)  MY_BACKEND_API_KEY=finance-corp-key-123   `
+### 5. Start the Server
 
-_(Note: Ensure .env is added to your .gitignore file)._
+Start the FastAPI backend using the Uvicorn server. We specify `--port 8080` to prevent common Windows socket access errors (`[WinError 10013]`).
 
-### 5\. Start the Server
+```bash
+uvicorn app.main:app --reload --port 8080
+```
 
-Start the FastAPI backend using the Uvicorn server. We specify --port 8080 to prevent common Windows socket access errors (\[WinError 10013\]).
+If successful, the terminal will display: `INFO: Application startup complete.`
 
-Bash
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   uvicorn app.main:app --reload --port 8080   `
-
-If successful, the terminal will display: INFO: Application startup complete.
-
-🚀 Usage & API Documentation
-----------------------------
+## 🚀 Usage & API Documentation
 
 FastAPI automatically generates an interactive Swagger UI. Once the server is running, navigate to:
 
-👉 [**http://127.0.0.1:8080/docs**](https://www.google.com/search?q=http://127.0.0.1:8080/docs)
+👉 **http://127.0.0.1:8080/docs**
 
 ### Example: Testing via Python Client
 
-You can test the machine-to-machine integration using the provided client.py script. Ensure rec1.wav is in the same directory.
+You can test the machine-to-machine integration using the provided `client.py` script. Ensure `rec1.wav` is in the same directory.
 
-Python
+```python
+import requests
+import json
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   import requests  import json  url = "http://127.0.0.1:8080/api/v1/analyze/audio"  # The server looks up this key to apply the correct Client Context business rules  headers = {      "X-API-Key": "finance-corp-key-123"   }  with open("rec1.wav", "rb") as audio_file:      files_payload = {"file": audio_file}      print("Uploading audio... Please wait.")      response = requests.post(url, files=files_payload, headers=headers)      response.raise_for_status()      print(json.dumps(response.json(), indent=2))   `
+url = "[http://127.0.0.1:8080/api/v1/analyze/audio](http://127.0.0.1:8080/api/v1/analyze/audio)"
+
+# The server looks up this key to apply the correct Client Context business rules
+headers = {
+    "X-API-Key": "finance-corp-key-123"
+}
+
+with open("rec1.wav", "rb") as audio_file:
+    files_payload = {"file": audio_file}
+    print("Uploading audio... Please wait.")
+    
+    response = requests.post(url, files=files_payload, headers=headers)
+    response.raise_for_status()
+    
+    print(json.dumps(response.json(), indent=2))
+```
 
 ### Example: Testing via cURL
 
-Bash
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   curl -X 'POST' \    'http://127.0.0.1:8080/api/v1/analyze/audio' \    -H 'accept: application/json' \    -H 'X-API-Key: finance-corp-key-123' \    -H 'Content-Type: multipart/form-data' \    -F 'file=@rec1.wav'   `
+```bash
+curl -X 'POST' \
+  '[http://127.0.0.1:8080/api/v1/analyze/audio](http://127.0.0.1:8080/api/v1/analyze/audio)' \
+  -H 'accept: application/json' \
+  -H 'X-API-Key: finance-corp-key-123' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'file=@rec1.wav'
+```
 
 🧠 Design Decisions & Assumptions
 ---------------------------------
@@ -122,4 +139,5 @@ Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQL
     
 5.  **Assumptions:** \* The system assumes uploaded audio files are of reasonable length (under ~30 minutes) for synchronous HTTP processing. For massive enterprise files, an asynchronous background task + webhook architecture would be required.
     
+
     *   It assumes the X-API-Key maps correctly to a valid ClientContext dictionary/database entry.
